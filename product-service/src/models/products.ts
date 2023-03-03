@@ -4,8 +4,8 @@ export const productsSchema = Joi.object().keys({
         version: [
             'uuidv4'
         ]
-    }),
+    }).required(),
     title: Joi.string().required(),
-    description: Joi.string(),
-    price: Joi.number()
+    description: Joi.string().required(),
+    price: Joi.number().required().strict()
 });
