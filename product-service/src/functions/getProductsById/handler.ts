@@ -9,8 +9,8 @@ const getProductsById: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async
   try {
     const id = event.pathParameters?.productId;
     const product = await productService.getSingleProduct(id);
-    
-    if(!product) {
+
+    if (!product) {
       return formatJSONNotFoundResponse({
         error: `Product with id ${id} not found`
       });

@@ -19,9 +19,9 @@ async function getProducts(): Promise<Product[]> {
         const stocksResults = await dynamoClient.scan({
             TableName: config.STOCKS_TABLE,
         }).promise();
-    
+
         const stocksObject = convertArrayToObject(stocksResults.Items, 'product_id');
-    
+
         const products: Product[] = productsResults.Items.map(item => ({
             id: item.id,
             title: item.title,
@@ -31,7 +31,7 @@ async function getProducts(): Promise<Product[]> {
         }));
         return products;
     }
-    
+
     return [];
 }
 
@@ -55,7 +55,7 @@ async function getSingleProduct(id: string): Promise<Product> {
                 ':product_id': id
             },
         };
-    
+
         const stockResult = await dynamoClient.query(stockParams).promise();
         const item = productResult.Items[0];
         const product: Product = {
@@ -67,8 +67,8 @@ async function getSingleProduct(id: string): Promise<Product> {
         }
         return product;
     }
-    
-    return null    
+
+    return null;
 }
 
 export default {
