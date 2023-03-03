@@ -7,7 +7,7 @@ import getProductsById from '@functions/getProductsById';
 const serverlessConfiguration: AWS = {
   service: 'product-service',
   frameworkVersion: '3',
-  plugins: ['serverless-esbuild', 'serverless-openapi-documentation'],
+  plugins: ['serverless-esbuild', 'serverless-openapi-documentation', 'serverless-dotenv-plugin'],
   provider: {
     name: 'aws',
     runtime: 'nodejs14.x',
@@ -39,7 +39,7 @@ const serverlessConfiguration: AWS = {
       concurrency: 10,
     },
   },
-
+  useDotenv: true
 };
 
 module.exports = serverlessConfiguration;
