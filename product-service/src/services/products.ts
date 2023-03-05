@@ -1,5 +1,5 @@
 import * as AWS from 'aws-sdk';
-import { Product } from 'src/types';
+import { Product, Stock } from 'src/types';
 import { convertArrayToObject } from 'src/utils';
 import config from '../config';
 
@@ -71,7 +71,27 @@ async function getSingleProduct(id: string): Promise<Product> {
     return null;
 }
 
+async function createProduct(product: Product): Promise<void> {
+    const stock: Stock = {
+        product_id: product.id,
+        count: product.count
+    }
+    delete product.count;
+
+    await dynamoClient.put({
+        TableName: config.PRODUCTS_TABLE,
+        Item: product
+    }).promise();
+
+    await dynamoClient.put({
+        TableName: config.STOCKS_TABLE,
+        Item: stock
+    }).promise();
+
+}
+
 export default {
     getProducts,
-    getSingleProduct
+    getSingleProduct,
+    createProduct
 }

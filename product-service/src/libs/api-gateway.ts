@@ -14,6 +14,16 @@ export const formatJSONResponse = (response: Record<string, unknown>) => {
   }
 }
 
+export const formatJSONBadRequestResponse = (response: Record<string, unknown>) => {
+  return {
+    statusCode: 400,
+    body: JSON.stringify(response),
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+    },
+  }
+}
+
 export const formatJSONNotFoundResponse = (response: Record<string, unknown>) => {
   return {
     statusCode: 404,
