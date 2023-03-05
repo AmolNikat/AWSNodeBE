@@ -71,13 +71,17 @@ async function getSingleProduct(id: string): Promise<Product> {
     return null;
 }
 
-async function createProduct(product: Product): Promise<void> {
+function seperateStockFromProduct(product: Product): Stock {
     const stock: Stock = {
         product_id: product.id,
         count: product.count
-    }
+    };
     delete product.count;
+    return stock;
+}
 
+async function createProduct(product: Product): Promise<void> {
+    const stock: Stock = seperateStockFromProduct(product);
     await dynamoClient.put({
         TableName: config.PRODUCTS_TABLE,
         Item: product
@@ -87,11 +91,32 @@ async function createProduct(product: Product): Promise<void> {
         TableName: config.STOCKS_TABLE,
         Item: stock
     }).promise();
+}
 
+async function createProductWithTransaction(product: Product): Promise<void> {
+    const stock: Stock = seperateStockFromProduct(product);
+
+    await dynamoClient.transactWrite({
+        TransactItems: [
+            {
+                Put: {
+                    TableName: config.PRODUCTS_TABLE,
+                    Item: product
+                }
+            },
+            {
+                Put: {
+                    TableName: config.STOCKS_TABLE,
+                    Item: stock
+                }
+            }
+        ]
+    }).promise();
 }
 
 export default {
     getProducts,
     getSingleProduct,
-    createProduct
+    createProduct,
+    createProductWithTransaction
 }
