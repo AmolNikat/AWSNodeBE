@@ -15,7 +15,7 @@ const createProduct: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (
     const product = {...body};
     const validationResult = productModel.validateSchema(body);
     if (validationResult.valid) {
-    // await productService.createProduct(body as any);  // commented, as we need to implement create product with transaction   
+    // await productService.createProduct(body as any);  // commented, as we need to implement create product with transaction.
     await productService.createProductWithTransaction(body as any);      
     return formatJSONResponse({
       product
