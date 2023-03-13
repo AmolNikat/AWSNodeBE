@@ -5,3 +5,8 @@ export type Product  = {
     price: number;
     title: string;
 }
+
+export type Stock = {
+    product_id: string,
+    count: number
+}
